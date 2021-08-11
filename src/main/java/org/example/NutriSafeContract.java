@@ -299,12 +299,13 @@ public class NutriSafeContract implements ContractInterface {
                                  String[] length,
                                  String[] width,
                                  String[] height,
+                                 String[] chargeIDs,
                                  String postage,
                                  String status){
 
         if (helper.privateObjectExists(ctx, id, pdc)) return helper.createReturnValue("400", "The object with the key " +id+ " already exists");
 
-        Shipment shipment = new Shipment(senderName, senderAddress, senderZipCode, senderCity, recipientName, recipientAddress, recipientZipCode, recipientCity, packagingType, content, weight, length, width, height, status, postage);
+        Shipment shipment = new Shipment(senderName, senderAddress, senderZipCode, senderCity, recipientName, recipientAddress, recipientZipCode, recipientCity, packagingType, content, weight, length, width, height, chargeIDs, status, postage);
 
         helper.putPrivateData(ctx, pdc, id, shipment);
 
@@ -666,6 +667,28 @@ public class NutriSafeContract implements ContractInterface {
         helper.putState(ctx, id, metaObject);
 
         return helper.createReturnValue("200", metaObject.toJSON());
+
+    }
+
+    @Transaction
+    public String updateChargeIDs(Context ctx, String id, String pdc, String chargeID, String operation){
+        if (!helper.privateObjectExists(ctx, id, pdc)) return helper.createReturnValue("400", "The shipment with the key " +id+ " does not exist");
+
+        Shipment shipment = helper.getShipment(ctx, pdc, id);
+
+        if (operation.equals("ADD")){
+            shipment.addChargeID(chargeID);
+        }
+        else if (operation.equals("DELETE")){
+            shipment.deleteChargeID(chargeID);
+        }
+        else {
+            return helper.createReturnValue("400", "The operation  " +operation+ " is not defined (Allowed: ADD, DELETE");
+        }
+
+        helper.putPrivateData(ctx, pdc, id, shipment);
+
+        return helper.createReturnValue("200", shipment.toJSON());
 
     }
 

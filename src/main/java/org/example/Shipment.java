@@ -53,6 +53,9 @@ public class Shipment {
     ArrayList<String> height = new ArrayList<>();
 
     @Property
+    ArrayList<String> chargeIDs = new ArrayList<>();
+
+    @Property
     String postage = "10";
 
     @Property
@@ -72,6 +75,7 @@ public class Shipment {
                     String[] length,
                     String[] width,
                     String[] height,
+                    String[] chargeIDs,
                     String postage,
                     String status){
         this.senderName = senderName;
@@ -89,7 +93,7 @@ public class Shipment {
         this.width = new ArrayList<>(Arrays.asList(width));
         this.length = new ArrayList<>(Arrays.asList(length));
         this.height = new ArrayList<>(Arrays.asList(height));
-
+        this.chargeIDs = new ArrayList<>(Arrays.asList(chargeIDs));
 
         this.postage = postage;
         this.status = status;
@@ -156,6 +160,18 @@ public class Shipment {
 
     public void setWidth(ArrayList<String>  width) {
         this.width = width;
+    }
+
+    public void setChargeIDs(ArrayList<String> chargeIDs) {
+        this.chargeIDs = chargeIDs;
+    }
+
+    public void addChargeID (String chargeID){
+        chargeIDs.add(chargeID);
+    }
+
+    public void deleteChargeID (String chargeID){
+        chargeIDs.remove(chargeID);
     }
 
     public String getStatus() {
@@ -230,6 +246,12 @@ public class Shipment {
                 heightString, new TypeToken<ArrayList<String> >() {}.getType()
         );
         shipment.setHeight(heightMap);
+
+        String chargeIDsString = new JSONObject(json).get("chargeIDs").toString();
+        ArrayList<String>  chargeIDsMap = new Gson().fromJson(
+                chargeIDsString, new TypeToken<ArrayList<String> >() {}.getType()
+        );
+        shipment.setChargeIDs(chargeIDsMap);
 
         return  shipment;
     }
