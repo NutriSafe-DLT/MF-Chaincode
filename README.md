@@ -1,3 +1,8 @@
+# Note 
+This Repo is forked from [MetaHL Fabric Chain Code](https://github.com/OTARIS/MF-Chaincode) and may contain untested not official supported features. 
+
+
+
 ![MetaHL Fabric](https://github.com/OTARIS/MF-Chaincode/blob/master/logo.png "MetaHL Fabric Logo")
 
 # Chain Code #
